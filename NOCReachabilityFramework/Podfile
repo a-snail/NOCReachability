@@ -1,0 +1,8 @@
+platform :ios, '9.0'
+
+target 'NOCReachabilityFramework' do
+  use_frameworks!
+
+  pod 'NOCLog', '~> 1.0'
+
+end

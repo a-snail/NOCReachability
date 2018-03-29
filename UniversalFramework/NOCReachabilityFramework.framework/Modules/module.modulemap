@@ -1,0 +1,6 @@
+framework module NOCReachabilityFramework {
+  umbrella header "NOCReachabilityFramework.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,17 @@
+project 'NOCReachability-Demo.xcodeproj'
+
+platform :ios, '9.0'
+
+def common_pods_for_target
+  pod 'NOCLog', '~> 1.0'
+end
+
+target 'NOCReachability-Demo' do
+  use_frameworks!
+    common_pods_for_target
+end
+
+target 'NOCReachabilityFramework-Demo' do
+  use_frameworks!
+    common_pods_for_target
+end
