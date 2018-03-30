@@ -28,14 +28,37 @@ before_install:
   - brew update
   - gem install xcpretty
   - brew install cocoapods
-script: 
-  - set -o pipefail
-  - xcodebuild -version
-  - xcodebuild -showsdks
-  - xcrun simctl list
-  - cd NOCReachabilityFramework pod install
-  - cd ../Demo pod install
+script:
+  - if [ $POD_LINT == "YES" ];
+    then
+      pod lib  lint;
+      pod spec lint;
+    fi
 
-  - if [ $POD_LINT == "YES" ]; then pod lib  lint; fi
-  - if [ $POD_LINT == "YES" ]; then pod spec lint; fi
-  - if [ $POD_LINT == "NO"  ]; then xcodebuild -workspace "$PROJECT_FILE" -scheme "$SCHEME" -configuration "$CONFIG" -sdk "$SDK" ONLY_ACTIVE_ARCH=NO clean build | xcpretty -c; fi
+  - if [ $POD_LINT == "NO" ];
+    then
+      set -o pipefail
+      xcodebuild -version
+      xcodebuild -showsdks
+      xcrun simctl list
+
+      if [ $PROJECT_FILE == "$PROJECT_FRAMEWORK" ];
+      then
+        cd NOCReachabilityFramework
+        pod install
+        cd ../
+      fi
+
+      if [ $PROJECT_FILE == "$PROJECT_DEMO" ];
+      then
+        cd Demo
+        pod install
+        cd ../
+      fi
+
+      xcodebuild
+      -workspace "$PROJECT_FILE"
+      -scheme "$SCHEME"
+      -configuration "$CONFIG"
+      -sdk "$SDK" ONLY_ACTIVE_ARCH=NO clean build | xcpretty -c;
+    fi
