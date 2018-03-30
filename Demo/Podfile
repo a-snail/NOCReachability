@@ -1,17 +1,16 @@
-project 'NOCReachability-Demo.xcodeproj'
-
+source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
+
+project 'NOCReachability-Demo.xcodeproj'
 
 def common_pods_for_target
   pod 'NOCLog', '~> 1.0'
 end
 
 target 'NOCReachability-Demo' do
-  use_frameworks!
     common_pods_for_target
 end
 
 target 'NOCReachabilityFramework-Demo' do
-  use_frameworks!
     common_pods_for_target
 end
