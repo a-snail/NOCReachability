@@ -1,14 +1,14 @@
 os: osx
-osx_image: xcode9.1
+osx_image: xcode9.2
 language: objective-c
 env:
   global:
     - LC_CTYPE=en_US.UTF-8
     - LANG=en_US.UTF-8
-    - PROJECT_FRAMEWORK=NOCReachabilityFramework/NOCReachabilityFramework.xcodeproj
+    - PROJECT_FRAMEWORK=NOCReachabilityFramework/NOCReachabilityFramework.xcworkspace
     - SCHEME_FRAMEWORK=NOCReachabilityFramework
     - SCHEME_UNIVERSAL=UniversalFramework
-    - PROJECT_DEMO=Demo/NOCReachability-Demo.xcodeproj
+    - PROJECT_DEMO=Demo/NOCReachability-Demo.xcworkspace
     - SCHEME_LIBRARY_DEMO=NOCReachability-Demo
     - SCHEME_FRAMEWORK_DEMO=NOCReachabilityFramework-Demo
     - IOS_SDK=iphonesimulator11.1
@@ -33,7 +33,9 @@ script:
   - xcodebuild -version
   - xcodebuild -showsdks
   - xcrun simctl list
+  - cd NOCReachabilityFramework pod install
+  - cd ../Demo pod install
 
   - if [ $POD_LINT == "YES" ]; then pod lib  lint; fi
   - if [ $POD_LINT == "YES" ]; then pod spec lint; fi
-  - if [ $POD_LINT == "NO"  ]; then xcodebuild -project "$PROJECT_FILE" -scheme "$SCHEME" -configuration "$CONFIG" -sdk "$SDK" ONLY_ACTIVE_ARCH=NO clean build | xcpretty -c; fi
+  - if [ $POD_LINT == "NO"  ]; then xcodebuild -workspace "$PROJECT_FILE" -scheme "$SCHEME" -configuration "$CONFIG" -sdk "$SDK" ONLY_ACTIVE_ARCH=NO clean build | xcpretty -c; fi

@@ -215,12 +215,11 @@ static const void *NOCReachabilityRetainCallback(const void *info) {
         return;
     }
 
-    __weak __typeof(self)weakSelf = self;
+    __block NOCReachability *bSelf = self;
     NOCReachabilityStatusBlock callback = ^(NOCReachabilityStatus status) {
-        __strong __typeof(weakSelf)strongSelf = weakSelf;
-        strongSelf.status = status;
-        if (strongSelf.statusBlock) {
-            strongSelf.statusBlock(status);
+        bSelf.status = status;
+        if (bSelf.statusBlock) {
+            bSelf.statusBlock(status);
         }
     };
 
@@ -239,7 +238,7 @@ static const void *NOCReachabilityRetainCallback(const void *info) {
                                              kCFRunLoopCommonModes);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),^{
         SCNetworkReachabilityFlags flags;
-        if (SCNetworkReachabilityGetFlags(_refReachability, &flags)) {
+        if (SCNetworkReachabilityGetFlags(bSelf.refReachability, &flags)) {
             NOCReachabilityStatusChange(flags, callback);
         }
     });
