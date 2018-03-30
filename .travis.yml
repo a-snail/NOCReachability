@@ -11,7 +11,7 @@ env:
     - PROJECT_DEMO=Demo/NOCReachability-Demo.xcworkspace
     - SCHEME_LIBRARY_DEMO=NOCReachability-Demo
     - SCHEME_FRAMEWORK_DEMO=NOCReachabilityFramework-Demo
-    - IOS_SDK=iphonesimulator11.1
+    - IOS_SDK=iphonesimulator11.2
     - CONFIG_DEBUG="Debug"
     - CONFIG_RELEASE="Release"
   matrix:
